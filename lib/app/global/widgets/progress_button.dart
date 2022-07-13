@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simple_animations/simple_animations.dart';
-import '../animations/fade_in.animation.dart';
-import '../animations/zoom_in_angel.animation.dart';
+import '../animations/fade_in_animation.dart';
+import '../animations/zoom_in_angel_animation.dart';
 
 class ProgressButton extends StatefulWidget {
   Color? buttonColor;

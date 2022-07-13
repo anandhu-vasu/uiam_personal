@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:get/get.dart';
 import 'package:uiam_personal/app/data/enums/variant_button_size.dart';
-import 'package:uiam_personal/app/global/animations/fade_in.animation.dart';
+import 'package:uiam_personal/app/global/animations/fade_in_animation.dart';
 import '../../../global/widgets/backdrop_progress_button.dart';
 import '../controllers/login_controller.dart';
 import 'otp_field.dart';

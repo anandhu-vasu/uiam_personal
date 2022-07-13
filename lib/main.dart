@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -17,15 +18,33 @@ Future<void> main() async {
   );
   await initServices();
   runApp(
-    GetMaterialApp(
+    DevicePreview(
+      enabled: true,
+      builder: (context) => const App(),
+    ),
+  );
+}
+
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
+  static GlobalKey uiamKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      key: uiamKey,
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
       theme: lightAppTheme,
       darkTheme: darkAppTheme,
+      themeMode: ThemeMode.light,
       title: appName,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-      themeMode: ThemeMode.light,
-    ),
-  );
+    );
+  }
 }
 
 Future<void> initServices() async {

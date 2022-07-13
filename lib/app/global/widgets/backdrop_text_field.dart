@@ -70,6 +70,7 @@ class BackdropTextField extends StatelessWidget {
                   color: Get.theme.colorScheme.onBackground.withOpacity(.8)),
               cursorColor: Colors.white,
               decoration: InputDecoration(
+                filled: false,
                 prefixIcon: Icon(
                   icon,
                   color: Get.theme.colorScheme.onBackground.withOpacity(.7),

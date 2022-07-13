@@ -98,15 +98,7 @@ class LoginView extends GetView<LoginController> {
                               position:
                                   Get.find<LoginController>().slideAnimation,
                               child: PhoneLoginForm())),
-                      Expanded(
-                        flex: 5,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(height: size.height * .05),
-                          ],
-                        ),
-                      ),
+                      Expanded(flex: 4, child: Container()),
                     ],
                   ),
                 ],

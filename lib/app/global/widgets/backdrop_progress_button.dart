@@ -7,8 +7,8 @@ import 'package:uiam_personal/app/global/widgets/backdrop_button.dart';
 
 import '../../../core/theme/variant_theme.dart';
 import '../../data/enums/variant_button_size.dart';
-import '../animations/fade_in.animation.dart';
-import '../animations/zoom_in_angel.animation.dart';
+import '../animations/fade_in_animation.dart';
+import '../animations/zoom_in_angel_animation.dart';
 
 class BackdropProgressButton extends StatefulWidget {
   final dynamic content;

@@ -8,6 +8,6 @@ class AuthMiddleware extends GetMiddleware {
   RouteSettings? redirect(String? route) {
     return Get.find<AuthService>().isAuth || route == Routes.LOGIN
         ? null
-        : const RouteSettings(name: Routes.LOGIN);
+        : RouteSettings(name: Routes.LOGIN, arguments: {"next": route});
   }
 }
