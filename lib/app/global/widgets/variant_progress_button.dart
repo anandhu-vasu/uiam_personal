@@ -122,7 +122,11 @@ class _VariantProgressButtonState extends State<VariantProgressButton>
               controller.forward();
               bool? ret = await widget.onTap();
               if (ret == null) {
-                await Future.delayed(const Duration(milliseconds: 500));
+                controller.reverse();
+                await Future.delayed(const Duration(milliseconds: 400));
+                setState(() {
+                  animationStatus = 0;
+                });
               } else if (ret == true) {
                 setState(() {
                   animationStatus = 2;

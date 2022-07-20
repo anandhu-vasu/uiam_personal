@@ -5,9 +5,9 @@ import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:uiam_personal/app/data/models/business_model.dart';
-import 'package:uiam_personal/app/data/providers/business_provider.dart';
 import 'package:uiam_personal/app/data/providers/firestore_provider.dart';
 import 'package:uiam_personal/app/global/widgets/avatar.dart';
+import 'package:uiam_personal/app/global/widgets/variant_button.dart';
 import 'package:uiam_personal/app/routes/app_pages.dart';
 import 'package:uiam_personal/core/values/consts.dart';
 
@@ -30,7 +30,7 @@ class HomeView extends GetView<HomeController> {
           SliverAppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
-              expandedHeight: 200,
+              expandedHeight: 150,
               stretch: true,
               flexibleSpace: FlexibleSpaceBar(
                   collapseMode: CollapseMode.parallax,
@@ -55,6 +55,42 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ]),
                   ))),
+          SliverToBoxAdapter(
+              child: Container(
+                  padding: EdgeInsets.all(dSpace / 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InkWell(
+                        borderRadius: BorderRadius.circular(borderRadius),
+                        onTap: () {
+                          Get.toNamed(Routes.APPOINTMENTS);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(dSpace / 4),
+                          child: Column(
+                            children: [
+                              Icon(Icons.list_alt_rounded),
+                              Text("Appointments"),
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(borderRadius),
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.all(dSpace / 4),
+                          child: Column(
+                            children: [
+                              Icon(Icons.qr_code_rounded),
+                              Text("Qr Code")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ))),
           SliverAppBar(
             backgroundColor: Get.theme.colorScheme.background,
             shadowColor: Get.theme.shadowColor.withOpacity(0.25),
@@ -69,7 +105,7 @@ class HomeView extends GetView<HomeController> {
               background: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: dSpace,
-                ),
+                ).copyWith(top: dSpace + 10),
                 child: TextField(
                   decoration: InputDecoration(
                       prefixIcon: Icon(Icons.search_rounded),
@@ -140,23 +176,3 @@ class HomeView extends GetView<HomeController> {
     ));
   }
 }
-
-/* 
-Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Row(
-                    children: [
-                      Avatar(controller.auth.user.image!),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: dSpace),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              controller.auth.user.name!,
-                              style: Get.theme.textTheme.titleLarge,
-                            ),
-                          ],
-                        ),
-                      ), 
-                      */

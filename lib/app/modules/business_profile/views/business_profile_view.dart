@@ -1,25 +1,29 @@
 import 'dart:html';
 
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:uiam_personal/app/data/models/appointment_model.dart';
 import 'package:uiam_personal/app/data/models/business_model.dart';
+import 'package:uiam_personal/app/data/providers/appointment_provider.dart';
 import 'package:uiam_personal/app/data/providers/business_provider.dart';
 import 'package:uiam_personal/app/data/providers/firestore_provider.dart';
+import 'package:uiam_personal/app/data/providers/timeslot_provider.dart';
 import 'package:uiam_personal/app/global/widgets/avatar.dart';
 import 'package:uiam_personal/app/global/widgets/drop_shadow.dart';
 import 'package:uiam_personal/app/global/widgets/variant_button.dart';
+import 'package:uiam_personal/app/global/widgets/variant_progress_button.dart';
 import 'package:uiam_personal/core/theme/variant_theme.dart';
 import 'package:uiam_personal/core/values/consts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../data/models/timeslot_model.dart';
 import '../controllers/business_profile_controller.dart';
 
-class BusinessProfileView extends GetView<BusinessProfileController> {
-  const BusinessProfileView({Key? key}) : super(key: key);
+class BusinessProfileView extends GetResponsiveView<BusinessProfileController> {
+  BusinessProfileView({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    print("#######object");
-    print(controller.bid!);
+  Widget builder() {
     return Scaffold(
       body: FutureBuilder(
           future: FirestoreProvider.db
@@ -32,8 +36,8 @@ class BusinessProfileView extends GetView<BusinessProfileController> {
               return Center(child: Text("Something went wrong"));
             }
 
-            if (snapshot.data == null ||
-                (snapshot.hasData && !snapshot.data!.exists)) {
+            if (snapshot.hasData &&
+                (snapshot.data == null || !snapshot.data!.exists)) {
               return Center(child: Text("Not Found"));
             }
 
@@ -46,6 +50,7 @@ class BusinessProfileView extends GetView<BusinessProfileController> {
                     child: Padding(
                   padding: const EdgeInsets.all(dSpace / 2),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -116,7 +121,15 @@ class BusinessProfileView extends GetView<BusinessProfileController> {
                           child: VariantButton(
                             content: "Appointment",
                             width: hSize + 2 * dSpace,
-                            onTap: () {},
+                            onTap: () {
+                              Get.bottomSheet(_appointment(),
+                                  isScrollControlled: true,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(borderRadius))),
+                                  backgroundColor:
+                                      Get.theme.colorScheme.background);
+                            },
                           ),
                         ),
                       ),
@@ -152,19 +165,19 @@ class BusinessProfileView extends GetView<BusinessProfileController> {
                       SizedBox(
                         height: dSpace / 2,
                       ),
-                      // Row(children: [
-                      //   Icon(
-                      //     Icons.phone,
-                      //     size: 20,
-                      //   ),
-                      //   Padding(
-                      //     padding: const EdgeInsets.symmetric(
-                      //         horizontal: dSpace / 2),
-                      //     child: Text("+91 " + business.phone!,
-                      //         style: Get.theme.textTheme.bodySmall
-                      //             ?.copyWith(fontSize: 14)),
-                      //   )
-                      // ]),
+                      Row(children: [
+                        Icon(
+                          Icons.phone,
+                          size: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: dSpace / 2),
+                          child: Text("+91 " + business.phone!,
+                              style: Get.theme.textTheme.bodySmall
+                                  ?.copyWith(fontSize: 14)),
+                        )
+                      ]),
                       SizedBox(
                         height: dSpace / 2,
                       ),
@@ -210,6 +223,113 @@ class BusinessProfileView extends GetView<BusinessProfileController> {
 
             return Center(child: CircularProgressIndicator());
           })),
+    );
+  }
+
+  _appointment() {
+    controller.selectedDate.value = null;
+    controller.selectedTimeslot.value = null;
+
+    return SizedBox(
+      height: Get.height,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(dSpace / 2),
+        child: Obx(() => Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropShadow(
+                  child: DateTimePicker(
+                    //initialValue: ,
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(Duration(days: 365)),
+                    dateLabelText: 'Date',
+                    onChanged: (dateStr) {
+                      controller.selectedDate.value = DateTime.parse(dateStr);
+                    },
+                  ),
+                ),
+                SizedBox(height: dSpace),
+                if (controller.selectedDate.value != null)
+                  FutureBuilder(
+                      future: TimeslotProvider(null).getAvailable(
+                          controller.bid!, controller.selectedDate.value!),
+                      builder: ((context,
+                          AsyncSnapshot<List<TimeslotModel>> snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(child: Text("Something went wrong"));
+                        }
+
+                        if (snapshot.hasData &&
+                            (snapshot.data == null || snapshot.data!.isEmpty)) {
+                          return Center(child: Text("No Timeslots available"));
+                        }
+
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return Wrap(
+                            alignment: WrapAlignment.center,
+                            runSpacing: dSpace / 2,
+                            spacing: dSpace / 2,
+                            children: snapshot.data!
+                                .map((timeslot) => Obx(() => VariantButton(
+                                      width: hSize / 2,
+                                      theme:
+                                          controller.selectedTimeslot.value ==
+                                                  timeslot.id
+                                              ? VariantTheme.success
+                                              : VariantTheme.primary,
+                                      content: timeslot.endTime12 +
+                                          " - " +
+                                          timeslot.endTime12,
+                                      onTap: () {
+                                        controller.selectedTimeslot.value =
+                                            timeslot.id;
+                                      },
+                                    )))
+                                .toList(),
+                          );
+                        }
+
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      })),
+                SizedBox(
+                  height: dSpace,
+                ),
+                VariantProgressButton(
+                    content: "Make an Appointment",
+                    width: 150,
+                    onCompleted: () {
+                      Get.back();
+                    },
+                    onTap: () async {
+                      if (controller.selectedDate.value == null) {
+                        Get.snackbar("Invalid Date", "Select a date",
+                            icon: Icon(
+                              Icons.error,
+                              color: Get.theme.errorColor,
+                            ),
+                            colorText: Get.theme.errorColor);
+                      } else if (controller.selectedTimeslot.value == null) {
+                        Get.snackbar("Invalid Timeslot", "Select a timeslot",
+                            icon: Icon(
+                              Icons.error,
+                              color: Get.theme.errorColor,
+                            ),
+                            colorText: Get.theme.errorColor);
+                      } else {
+                        return await AppointmentProvider(null).create(
+                            model: AppointmentModel(
+                                bid: controller.bid!,
+                                pid: controller.auth.uid,
+                                timeslotId: controller.selectedTimeslot.value!,
+                                date: controller.selectedDate.value!));
+                      }
+                      return null;
+                    })
+              ],
+            )),
+      ),
     );
   }
 }

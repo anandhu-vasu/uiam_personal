@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../middleware/auth_middleware.dart';
 import '../middleware/redirect_if_auth_middleware.dart';
 import '../middleware/redirect_if_no_profile_middleware.dart';
+import '../modules/appointments/bindings/appointments_binding.dart';
+import '../modules/appointments/views/appointments_view.dart';
 import '../modules/business_profile/bindings/business_profile_binding.dart';
 import '../modules/business_profile/views/business_profile_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -54,8 +56,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.BUSINESS_PROFILE,
-      page: () => const BusinessProfileView(),
+      page: () => BusinessProfileView(),
       binding: BusinessProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.APPOINTMENTS,
+      page: () => AppointmentsView(),
+      binding: AppointmentsBinding(),
     ),
   ];
 }

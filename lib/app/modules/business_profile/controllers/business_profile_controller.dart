@@ -6,6 +6,9 @@ class BusinessProfileController extends GetxController {
   final auth = Get.find<AuthService>();
   final bid = Get.parameters['bid'];
 
+  final selectedDate = Rxn<DateTime>(null);
+  final selectedTimeslot = Rxn<String>(null);
+
   @override
   void onInit() {
     super.onInit();
