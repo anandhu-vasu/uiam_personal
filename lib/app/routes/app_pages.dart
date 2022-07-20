@@ -15,6 +15,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/person_profile_form/bindings/person_profile_form_binding.dart';
 import '../modules/person_profile_form/views/person_profile_form_view.dart';
+import '../modules/qr_code/bindings/qr_code_binding.dart';
+import '../modules/qr_code/views/qr_code_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 
@@ -63,6 +65,11 @@ class AppPages {
       name: _Paths.APPOINTMENTS,
       page: () => AppointmentsView(),
       binding: AppointmentsBinding(),
+    ),
+    GetPage(
+      name: _Paths.QR_CODE,
+      page: () => const QrCodeView(),
+      binding: QrCodeBinding(),
     ),
   ];
 }
