@@ -42,7 +42,7 @@ class AppointmentsController extends GetxController {
                     .toIso8601String()
                     .replaceFirst(RegExp(r'Z'), ''))
             .where("pid", isEqualTo: auth.uid)
-            .where("isVisited", isEqualTo: isVisited)));
+            .where("is_visited", isEqualTo: isVisited)));
 
     final result = appointments.map((appointment) async => {
           "appointment": appointment,

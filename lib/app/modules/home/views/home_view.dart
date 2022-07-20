@@ -57,6 +57,7 @@ class HomeView extends GetView<HomeController> {
                   ))),
           SliverToBoxAdapter(
               child: Container(
+                  height: vSize * 2,
                   padding: EdgeInsets.all(dSpace / 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -105,8 +106,10 @@ class HomeView extends GetView<HomeController> {
               background: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: dSpace,
-                ).copyWith(top: dSpace + 10),
+                ).copyWith(top: dSpace),
                 child: TextField(
+                  onChanged: (value) =>
+                      controller.search.value = value.removeAllWhitespace,
                   decoration: InputDecoration(
                       prefixIcon: Icon(Icons.search_rounded),
                       border: OutlineInputBorder(
@@ -120,9 +123,19 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
         body: Container(
-          child: FirestoreListView<Map<String, dynamic>>(
+            child: Obx(
+          () => FirestoreListView<Map<String, dynamic>>(
               physics: BouncingScrollPhysics(),
-              query: FirestoreProvider.db.collection('businesses'),
+              query: controller.search.value.isNotEmpty
+                  ? FirestoreProvider.db
+                      .collection('businesses')
+                      .orderBy("name")
+                      .where("name",
+                          isGreaterThanOrEqualTo: controller.search.value)
+                      .where("name",
+                          isLessThanOrEqualTo:
+                              controller.search.value + "\uf7ff")
+                  : FirestoreProvider.db.collection('businesses'),
               itemBuilder: (context, snapshot) {
                 BusinessModel business =
                     BusinessModel.fromDocumentSnapshot(snapshot);
@@ -171,7 +184,7 @@ class HomeView extends GetView<HomeController> {
                   ),
                 );
               }),
-        ),
+        )),
       ),
     ));
   }
