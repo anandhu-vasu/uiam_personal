@@ -78,7 +78,9 @@ class HomeView extends GetView<HomeController> {
                       ),
                       InkWell(
                         borderRadius: BorderRadius.circular(borderRadius),
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(Routes.QR_CODE);
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(dSpace / 4),
                           child: Column(

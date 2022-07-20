@@ -9,6 +9,7 @@ abstract class Routes {
   static const PERSON_PROFILE_FORM = _Paths.PERSON_PROFILE_FORM;
   static const BUSINESS_PROFILE = _Paths.BUSINESS_PROFILE;
   static const APPOINTMENTS = _Paths.APPOINTMENTS;
+  static const QR_CODE = _Paths.QR_CODE;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const PERSON_PROFILE_FORM = '/person-profile-form';
   static const BUSINESS_PROFILE = '/business-profile';
   static const APPOINTMENTS = '/appointments';
+  static const QR_CODE = '/qr-code';
 }
