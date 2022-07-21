@@ -8,6 +8,7 @@ class HomeController extends GetxController {
   final auth = Get.find<AuthService>();
   //final searchController = TextEditingController();
   final search = ''.obs;
+  final type = Rxn<String>(null);
 
   @override
   void onInit() {

@@ -94,7 +94,7 @@ class AppointmentsView extends GetResponsiveView<AppointmentsController> {
     ));
   }
 
-  _appointmentsPanel({bool? isVisited}) => FutureBuilder<
+  _appointmentsPanel({bool isVisited=false}) => FutureBuilder<
           List<Map<String, FirestoreModel>>>(
       future: controller.getAppointments(isVisited: isVisited),
       builder: (context, snapshot) {

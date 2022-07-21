@@ -34,15 +34,17 @@ class AppointmentsController extends GetxController {
   }
 
   Future<List<Map<String, FirestoreModel>>> getAppointments(
-      {bool? isVisited}) async {
-    final appointments = await AppointmentProvider(null).fetchAll(
+      {bool isVisited = false}) async {
+    final fappointments = await AppointmentProvider(null).fetchAll(
         query: ((ref, docId) => ref
             .where("date",
                 isEqualTo: selectedDay.value!
                     .toIso8601String()
                     .replaceFirst(RegExp(r'Z'), ''))
-            .where("pid", isEqualTo: auth.uid)
-            .where("is_visited", isEqualTo: isVisited)));
+            .where("pid", isEqualTo: auth.uid)));
+
+    final appointments = fappointments
+        .where((appointment) => appointment.isVisited == isVisited);
 
     final result = appointments.map((appointment) async => {
           "appointment": appointment,

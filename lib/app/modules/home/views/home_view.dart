@@ -36,24 +36,30 @@ class HomeView extends GetView<HomeController> {
                   collapseMode: CollapseMode.parallax,
                   background: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Row(children: [
-                      Avatar(
-                        controller.auth.user.image!,
-                        blurRadius: 55,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: dSpace),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              controller.auth.user.name!,
-                              style: Get.theme.textTheme.titleLarge,
-                            ),
-                          ],
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.PERSON_PROFILE_FORM);
+                      },
+                      child: Row(children: [
+                        Avatar(
+                          controller.auth.user.image!,
+                          blurRadius: 55,
                         ),
-                      ),
-                    ]),
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: dSpace),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                controller.auth.user.name!,
+                                style: Get.theme.textTheme.titleLarge,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]),
+                    ),
                   ))),
           SliverToBoxAdapter(
               child: Container(
@@ -95,6 +101,7 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ))),
           SliverAppBar(
+            collapsedHeight: 150,
             backgroundColor: Get.theme.colorScheme.background,
             shadowColor: Get.theme.shadowColor.withOpacity(0.25),
             scrolledUnderElevation: dSpace,
@@ -106,18 +113,36 @@ class HomeView extends GetView<HomeController> {
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
               background: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: dSpace,
-                ).copyWith(top: dSpace),
-                child: TextField(
-                  onChanged: (value) =>
-                      controller.search.value = value.removeAllWhitespace,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search_rounded),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius:
-                              BorderRadius.circular(borderRadius * 5))),
+                padding: const EdgeInsets.only(top: dSpace),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextField(
+                      onChanged: (value) =>
+                          controller.search.value = value.removeAllWhitespace,
+                      decoration: InputDecoration(
+                          hintText: "Search Businesses...",
+                          prefixIcon: Icon(Icons.search_rounded),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius:
+                                  BorderRadius.circular(borderRadius * 5))),
+                    ),
+                    SizedBox(
+                      height: dSpace / 2,
+                    ),
+                    DropdownButton<String>(
+                        enableFeedback: false,
+                        focusColor: Colors.transparent,
+                        borderRadius: BorderRadius.circular(borderRadius),
+                        items: ["All", ...businessTypes]
+                            .map((e) => DropdownMenuItem<String>(
+                                  child: Text(e),
+                                  value: e == "All" ? null : e,
+                                ))
+                            .toList(),
+                        onChanged: (e) => controller.type.value = e)
+                  ],
                 ),
               ),
             ),
@@ -137,7 +162,10 @@ class HomeView extends GetView<HomeController> {
                       .where("name",
                           isLessThanOrEqualTo:
                               controller.search.value + "\uf7ff")
-                  : FirestoreProvider.db.collection('businesses'),
+                      .where("type", isEqualTo: controller.type.value)
+                  : FirestoreProvider.db
+                      .collection('businesses')
+                      .where("type", isEqualTo: controller.type.value),
               itemBuilder: (context, snapshot) {
                 BusinessModel business =
                     BusinessModel.fromDocumentSnapshot(snapshot);

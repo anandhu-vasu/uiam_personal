@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:uiam_personal/app/data/providers/person_provider.dart';
@@ -15,6 +17,8 @@ class AuthService extends GetxService {
   PersonModel user = PersonModel();
 
   User? get firebaseUser => _firebaseUser.value;
+
+  bool loading = true;
 
   bool get isAuth => firebaseUser != null;
   String get uid => firebaseUser!.uid;
@@ -35,6 +39,7 @@ class AuthService extends GetxService {
     } else {
       user = PersonModel();
     }
+    loading = false;
     if (Get.currentRoute != Routes.SPLASH) {
       redirect();
     }

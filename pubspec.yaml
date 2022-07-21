@@ -29,6 +29,8 @@ dependencies:
   table_calendar: ^3.0.6
   qr_flutter: ^4.0.0
   mobile_scanner: ^2.0.0
+  maps_launcher: ^2.0.1
+  url_launcher: ^6.1.5
 
 dev_dependencies: 
   build_runner: ^2.1.11
@@ -40,4 +42,5 @@ dev_dependencies:
 
 flutter: 
   uses-material-design: true
-
+  assets:
+    - assets/logo.jpg
