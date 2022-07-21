@@ -4,6 +4,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:uiam_personal/app/data/models/appointment_model.dart';
 import 'package:uiam_personal/app/data/models/business_model.dart';
 import 'package:uiam_personal/app/data/providers/appointment_provider.dart';
@@ -17,6 +18,7 @@ import 'package:uiam_personal/app/global/widgets/variant_progress_button.dart';
 import 'package:uiam_personal/core/theme/variant_theme.dart';
 import 'package:uiam_personal/core/values/consts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../../data/models/timeslot_model.dart';
 import '../controllers/business_profile_controller.dart';
 
@@ -82,19 +84,6 @@ class BusinessProfileView extends GetResponsiveView<BusinessProfileController> {
                       ),
                       Row(
                         children: [
-                          // Expanded(
-                          //     flex: 1,
-                          //     child: Row(
-                          //       mainAxisAlignment: MainAxisAlignment.center,
-                          //       crossAxisAlignment: CrossAxisAlignment.center,
-                          //       children: [
-                          //         Text(
-                          //           "5",
-                          //           style: Get.theme.textTheme.titleLarge,
-                          //         ),
-                          //         Icon(Icons.star)
-                          //       ],
-                          //     )),
                           Expanded(
                               flex: 1,
                               child: Row(
@@ -104,11 +93,17 @@ class BusinessProfileView extends GetResponsiveView<BusinessProfileController> {
                                 children: [
                                   IconButton(
                                     icon: Icon(Icons.location_pin),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      MapsLauncher.launchCoordinates(
+                                          business.location!.latitude,
+                                          business.location!.latitude);
+                                    },
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.phone),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      launchUrlString("tel:${business.phone}");
+                                    },
                                   ),
                                 ],
                               )),

@@ -210,7 +210,7 @@ class PersonProfileFormView
                         onCompleted: () {
                           if (controller.person.id != null) {
                             Map<String, dynamic>? arguments = Get.arguments;
-                            Get.toNamed(arguments?['next'] ?? Routes.HOME);
+                            Get.offAllNamed(Routes.HOME);
                           }
                         },
                         onTap: () async {
@@ -380,7 +380,7 @@ class PersonProfileFormView
                         content: "Save",
                         onCompleted: () {
                           Map<String, dynamic>? arguments = Get.arguments;
-                          Get.toNamed(arguments?['next'] ?? Routes.HOME);
+                          Get.offAllNamed(Routes.HOME);
                         },
                         onTap: () async {
                           if (controller.addressFormKey.currentState != null &&

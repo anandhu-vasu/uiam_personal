@@ -1,4 +1,6 @@
+import 'package:get/get.dart';
 import 'package:uiam_personal/app/data/providers/appointment_provider.dart';
+import 'package:uiam_personal/app/services/auth_service.dart';
 
 import 'firestore_provider.dart';
 import '../models/timeslot_model.dart';
@@ -19,10 +21,18 @@ class TimeslotProvider extends FirestoreProvider<TimeslotModel> {
           (await collectionRef().where("bid", isEqualTo: bid).get())
               .docs
               .map((documentSnapshot) => modelRef(documentSnapshot));
-
       final appointments = await AppointmentProvider(null).fetchAll(
-          query: ((ref, docId) =>
-              ref.where("bid", isEqualTo: bid).where("date", isEqualTo: date)));
+          query: ((ref, docId) => ref.where("bid", isEqualTo: bid).where("date",
+              isEqualTo:
+                  date.toIso8601String().replaceFirst(RegExp(r'Z'), ''))));
+
+      if (appointments
+              .where((appointment) =>
+                  appointment.pid == Get.find<AuthService>().uid)
+              .length >
+          0) {
+        return [];
+      }
 
       return timeslots.where((timeslot) {
         final appointments_for_timeslot = appointments

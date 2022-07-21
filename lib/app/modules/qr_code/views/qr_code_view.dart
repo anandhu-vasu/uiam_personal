@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:uiam_personal/core/values/consts.dart';
+import '../../../../core/values/strings.dart';
 import '../controllers/qr_code_controller.dart';
 
 class QrCodeView extends GetView<QrCodeController> {
@@ -14,6 +16,25 @@ class QrCodeView extends GetView<QrCodeController> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text(
+              appNameShort,
+              style: TextStyle(
+                color: Get.theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.w600,
+                fontSize: 30,
+              ),
+            ),
+            Text(
+              appFor.toUpperCase(),
+              style: TextStyle(
+                color: Get.theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
+            ),
+            SizedBox(
+              height: dSpace,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -24,7 +45,7 @@ class QrCodeView extends GetView<QrCodeController> {
                     color: Colors.white,
                   ),
                   child: QrImage(
-                    data: controller.auth.user.id!,
+                    data: controller.auth.uid,
                     version: QrVersions.auto,
                     size: 220,
                     gapless: false,
@@ -35,14 +56,18 @@ class QrCodeView extends GetView<QrCodeController> {
                     ),*/
                   ),
                 ),
-                ],
-            )
-          
-            
-          
+              ],
+            ),
+            SizedBox(
+              height: dSpace,
+            ),
+            Text(
+              controller.auth.user.name!,
+              style: Get.theme.textTheme.titleLarge?.copyWith(
+                color: Get.theme.colorScheme.onPrimary,
+              ),
+            ),
           ],
         ));
   }
-
-  
 }
