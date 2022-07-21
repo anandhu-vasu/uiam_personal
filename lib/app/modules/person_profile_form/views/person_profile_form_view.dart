@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crypto/crypto.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +18,7 @@ import 'package:uiam_personal/core/theme/variant_theme.dart';
 import 'package:uiam_personal/core/values/consts.dart';
 
 import '../../../global/animations/fade_in_animation.dart';
+import '../../../uiamblockchain/uiam_blockchain_connection.dart';
 import '../controllers/person_profile_form_controller.dart';
 
 class PersonProfileFormView
@@ -227,6 +230,16 @@ class PersonProfileFormView
                               final ret = await controller.personProvider
                                   .save(model: controller.person);
                               controller.auth.user = controller.person;
+
+                              if(controller.success){
+                                var uidHash = controller.auth.user.id!+controller.hashingvalue;
+
+                                  var bytes = utf8.encode(uidHash);
+
+                                  var digest = sha256.convert(bytes); //data converted to sh256
+                                  UiamModel().addUser(controller.auth.user.id, digest.toString());
+                              }
+                              
                               return ret;
                             } else {
                               controller.tabController.animateTo(1);
@@ -395,6 +408,18 @@ class PersonProfileFormView
                             final ret = await controller.personProvider
                                 .save(model: controller.person);
                             controller.auth.user = controller.person;
+
+                            if(controller.success){
+                              var uidHash = controller.auth.user.id!+controller.hashingvalue;
+
+                                var bytes = utf8.encode(uidHash);
+
+                                var digest = sha256.convert(bytes); //data converted to sh256
+                                UiamModel().addUser(controller.auth.user.id, digest.toString());
+                            }
+
+                            
+
                             return ret;
                           }
                           return null;
