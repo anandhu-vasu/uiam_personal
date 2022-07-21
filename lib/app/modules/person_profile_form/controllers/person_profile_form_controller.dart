@@ -17,6 +17,9 @@ class PersonProfileFormController extends GetxController
   final GlobalKey<FormState> addressFormKey = GlobalKey<FormState>();
   late final tabController = TabController(length: 2, vsync: this);
 
+  final hashingvalue = "qwertyuiopasdfghjklzxcvbnm";
+  bool success = false;
+
   final AuthService auth = Get.find<AuthService>();
 
   PersonModel person = PersonModel();

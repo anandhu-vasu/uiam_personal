@@ -29,6 +29,10 @@ dependencies:
   table_calendar: ^3.0.6
   qr_flutter: ^4.0.0
   mobile_scanner: ^2.0.0
+  http: ^0.13.4
+  web3dart: ^2.3.5
+  web_socket_channel: ^2.2.0
+  crypto: ^3.0.2
   maps_launcher: ^2.0.1
   url_launcher: ^6.1.5
 
@@ -43,4 +47,6 @@ dev_dependencies:
 flutter: 
   uses-material-design: true
   assets:
+    - src/abis/UiamContract.json
+
     - assets/logo.jpg
