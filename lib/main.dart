@@ -19,7 +19,7 @@ Future<void> main() async {
   await initServices();
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) => const App(),
     ),
   );
@@ -43,6 +43,7 @@ class App extends StatelessWidget {
       title: appName,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

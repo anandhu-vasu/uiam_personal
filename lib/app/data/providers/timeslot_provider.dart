@@ -21,6 +21,7 @@ class TimeslotProvider extends FirestoreProvider<TimeslotModel> {
           (await collectionRef().where("bid", isEqualTo: bid).get())
               .docs
               .map((documentSnapshot) => modelRef(documentSnapshot));
+
       final appointments = await AppointmentProvider(null).fetchAll(
           query: ((ref, docId) => ref.where("bid", isEqualTo: bid).where("date",
               isEqualTo:

@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -272,7 +270,7 @@ class BusinessProfileView extends GetResponsiveView<BusinessProfileController> {
                                                   timeslot.id
                                               ? VariantTheme.success
                                               : VariantTheme.primary,
-                                      content: timeslot.endTime12 +
+                                      content: timeslot.startTime12 +
                                           " - " +
                                           timeslot.endTime12,
                                       onTap: () {

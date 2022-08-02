@@ -33,18 +33,20 @@ class HomeView extends GetView<HomeController> {
               expandedHeight: 150,
               stretch: true,
               flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.parallax,
-                  background: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.PERSON_PROFILE_FORM);
-                      },
-                      child: Row(children: [
-                        Avatar(
-                          controller.auth.user.image!,
-                          blurRadius: 55,
-                        ),
+                collapseMode: CollapseMode.parallax,
+                background: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              Get.toNamed(Routes.PERSON_PROFILE_FORM);
+                            },
+                            child: Avatar(
+                              controller.auth.user.image!,
+                              blurRadius: 55,
+                            )),
                         Padding(
                           padding:
                               const EdgeInsets.symmetric(horizontal: dSpace),
@@ -58,9 +60,14 @@ class HomeView extends GetView<HomeController> {
                             ],
                           ),
                         ),
+                        IconButton(
+                            onPressed: () {
+                              controller.auth.signOut();
+                            },
+                            icon: Icon(Icons.logout))
                       ]),
-                    ),
-                  ))),
+                ),
+              )),
           SliverToBoxAdapter(
               child: Container(
                   height: vSize * 2,
