@@ -49,11 +49,7 @@ class QrCodeView extends GetView<QrCodeController> {
                     version: QrVersions.auto,
                     size: 220,
                     gapless: false,
-                    /*embeddedImage:
-                        CachedNetworkImageProvider(controller.auth.user.image!),
-                    embeddedImageStyle: QrEmbeddedImageStyle(
-                      size: Size(80, 80),
-                    ),*/
+                    
                   ),
                 ),
               ],
