@@ -393,7 +393,7 @@ class PersonProfileFormView
                               return null;
                             }
 
-                            if (!controller.isInfoSave) {
+                            if (!controller.isInfoSave && controller.infoFormKey.currentState!=null) {
                               controller.infoFormKey.currentState!.save();
                               if (controller.imagePath.isEmpty) {
                                 controller.imagePath.value =
